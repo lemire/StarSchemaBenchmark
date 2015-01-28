@@ -75,6 +75,32 @@ print_prep(int table, int update)
     return(res);
 }
 
+
+int
+dbg_print_char(int format, FILE *target, char data,  int sep)
+{
+
+    switch(format)
+    {
+    case DT_CHR:
+        if (columnar)
+            fprintf(target, "%c ", (char)data);
+        else
+            fprintf(target, "%c", (char)data);
+        break;
+    default:
+      abort();
+    }
+
+#ifdef EOL_HANDLING
+    if (sep)
+#endif /* EOL_HANDLING */
+        if (!columnar && (sep != -1))
+            fprintf(target, "%c", SEPARATOR);
+
+    return(0);
+}
+
 int
 dbg_print(int format, FILE *target, void *data, int len, int sep)
 {
@@ -138,6 +164,116 @@ dbg_print(int format, FILE *target, void *data, int len, int sep)
         else
             fprintf(target, "%c", (char)data);
         break;
+    }
+
+#ifdef EOL_HANDLING
+    if (sep)
+#endif /* EOL_HANDLING */
+        if (!columnar && (sep != -1))
+            fprintf(target, "%c", SEPARATOR);
+
+    return(0);
+}
+
+
+int
+dbg_print_charp(int format, FILE *target, char *data, int len, int sep)
+{
+
+    switch(format)
+    {
+    case DT_STR:
+        if (columnar)
+            fprintf(target, "%-*s", len, data);
+        else
+            fprintf(target, "%s", data);
+        break;
+#ifdef MVS
+    case DT_VSTR:
+        /* note: only used in MVS, assumes columnar output */
+        fprintf(target, "%c%c%-*s",
+                (len >> 8) & 0xFF, len & 0xFF, len, data);
+        break;
+#endif /* MVS */
+    default:
+      abort();
+    }
+
+#ifdef EOL_HANDLING
+    if (sep)
+#endif /* EOL_HANDLING */
+        if (!columnar && (sep != -1))
+            fprintf(target, "%c", SEPARATOR);
+
+    return(0);
+}
+
+int
+dbg_print_long(int format, FILE *target, long data, int len, int sep)
+{
+    int dollars,
+        cents;
+
+    switch(format)
+    {
+    case DT_INT:
+        if (columnar)
+            fprintf(target, "%12ld", data);
+        else
+            fprintf(target, "%ld", data);
+        break;
+    case DT_KEY:
+        fprintf(target, "%ld", (long)data);
+        break;
+    case DT_MONEY:
+        cents = (long)data;
+        if (cents < 0)
+        {
+            fprintf(target, "-");
+            cents = -cents;
+        }
+        dollars = cents / 100;
+        cents %= 100;
+        if (columnar)
+            fprintf(target, "%12d.%02d", dollars, cents);
+        else
+            fprintf(target, "%d.%02d", dollars, cents);
+        break;
+            default:
+      abort();
+    }
+
+#ifdef EOL_HANDLING
+    if (sep)
+#endif /* EOL_HANDLING */
+        if (!columnar && (sep != -1))
+            fprintf(target, "%c", SEPARATOR);
+
+    return(0);
+}
+
+int
+dbg_print_longp(int format, FILE *target, long * data, int len, int sep)
+{
+
+
+    switch(format)
+    {
+    case DT_HUGE:
+#ifndef SUPPORT_64BITS
+        if (*(long *)((long *)data + 1) == 0) \
+            if (columnar) fprintf(target, "%12ld", *(long *)data);
+            else fprintf(target, "%ld", *(long *)data);
+        else if (columnar) fprintf(target, "%5ld%07ld",
+                                       *(long *)((long *)data + 1), *(long *)data);
+        else fprintf(target,"%ld%07ld",
+                         *(long *)((long *)data + 1), *(long *)data);
+#else
+        fprintf(target, HUGE_FORMAT, *(DSS_HUGE *)data);
+#endif /* SUPPORT_64BITS */
+        break;
+      default:
+      abort();
     }
 
 #ifdef EOL_HANDLING
@@ -246,9 +382,7 @@ pr_line(order_t *o, int mode)
     static FILE *fp_l = NULL;
     static int last_mode = 0;
     long      i;
-    int days;
-    char buf[100];
-
+    
     if (fp_l == NULL || mode != last_mode)
     {
         if (fp_l)

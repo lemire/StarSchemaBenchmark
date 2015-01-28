@@ -3,7 +3,7 @@ INCLUDE=include
 DATABASE=DB2 
 MACHINE =LINUX 
 WORKLOAD =SSBM 
-CFLAGS	= -O -DDBNAME=\"dss\" -D$(MACHINE) -D$(DATABASE) -D$(WORKLOAD)
+CFLAGS	= -Wall  -O2 -DDBNAME=\"dss\" -D$(MACHINE) -D$(DATABASE) -D$(WORKLOAD)
 LDFLAGS = -O
 # The OBJ,EXE and LIB macros will need to be changed for compilation under
 #  Windows NT

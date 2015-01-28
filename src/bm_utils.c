@@ -130,7 +130,7 @@ yes_no(char *prompt)
 #pragma warning(default:4127)
 #endif
         printf("%s [Y/N]: ", prompt);
-        gets(reply);
+        fgets(reply, 127, stdin);
         switch (*reply)
         {
         case 'y':

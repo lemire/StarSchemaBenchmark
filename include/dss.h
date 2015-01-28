@@ -359,7 +359,7 @@ extern tdef tdefs[];
  */
 #define  C_SIZE       165
 #define  C_NAME_TAG   "Customer#"
-#define  C_NAME_FMT   "%s%09d"
+#define  C_NAME_FMT   "%s%09ld"
 #define  C_MSEG_MAX    5
 #define  C_ABAL_MIN   -99999
 #define  C_ABAL_MAX    999999
@@ -504,27 +504,39 @@ extern tdef tdefs[];
 #define DT_CHR		6
 
 int dbg_print(int dt, FILE *tgt, void *data, int len, int eol);
-#define PR_STR(f, str, len)		dbg_print(DT_STR, f, (void *)str, len, 1)
-#define PR_VSTR(f, str, len) 	dbg_print(DT_VSTR, f, (void *)str, len, 1)
-#define PR_VSTR_LAST(f, str, len) 	dbg_print(DT_VSTR, f, (void *)str, len, 0)
-#define PR_INT(f, str) 			dbg_print(DT_INT, f, (void *)str, 0, 1)
-#define PR_HUGE(f, str) 		dbg_print(DT_HUGE, f, (void *)str, 0, 1)
-#define PR_KEY(f, str) 			dbg_print(DT_KEY, f, (void *)str, 0, -1)
-#define PR_MONEY(f, str) 		dbg_print(DT_MONEY, f, (void *)str, 0, 1)
-#define PR_CHR(f, str)	 		dbg_print(DT_CHR, f, (void *)str, 0, 1)
+int
+dbg_print_long(int format, FILE *target, long data, int len, int sep);
+int
+dbg_print_longp(int format, FILE *target, long *data, int len, int sep);
+int
+dbg_print_char(int format, FILE *target, char data,  int sep);
+
+int
+dbg_print_charp(int format, FILE *target, char *data, int len, int sep);
+
+int
+dbg_print_longp(int format, FILE *target, long * data, int len, int sep);
+#define PR_STR(f, str, len)		dbg_print_charp(DT_STR, f, str, len, 1)
+#define PR_VSTR(f, str, len) 	dbg_print_charp(DT_VSTR, f, str, len, 1)
+#define PR_VSTR_LAST(f, str, len) 	dbg_print_charp(DT_VSTR, f, str, len, 0)
+#define PR_INT(f, str) 			dbg_print_long(DT_INT, f, str, 0, 1)
+#define PR_HUGE(f, str) 		dbg_print_longp(DT_HUGE, f, str, 0, 1)
+#define PR_KEY(f, str) 			dbg_print_long(DT_KEY, f, str, 0, -1)
+#define PR_MONEY(f, str) 		dbg_print_long(DT_MONEY, f, str, 0, 1)
+#define PR_CHR(f, str)	 		dbg_print_char(DT_CHR, f, str, 1)
 #define  PR_STRT(fp)   /* any line prep for a record goes here */
 #define  PR_END(fp)    fprintf(fp, "\n")   /* finish the record here */
 
 #ifdef SSBM
 #define  PR_DATE(tgt, yr, mn, dy)	\
-   sprintf(tgt, "19%02d%02d%02d", yr, mn, dy)
+   sprintf(tgt, "19%02ld%02ld%02ld", yr, mn, dy)
 #else
 #ifdef MDY_DATE
 #define  PR_DATE(tgt, yr, mn, dy)	\
-   sprintf(tgt, "%02d-%02d-19%02d", mn, dy, yr)
+   sprintf(tgt, "%02ld-%02ld-19%02lld", mn, dy, yr)
 #else
 #define  PR_DATE(tgt, yr, mn, dy)	\
-sprintf(tgt, "19%02d-%02d-%02d", yr, mn, dy)
+sprintf(tgt, "19%02ld-%02ld-%02ld", yr, mn, dy)
 #endif /* DATE_FORMAT */
 #endif
 /*

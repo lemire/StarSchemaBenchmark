@@ -438,7 +438,7 @@ gen_tbl (int tnum, long start, long count, long upd_num)
 #endif
             mk_order (i, &o, upd_num % 10000);
 
-            if (insert_segments  && (upd_num > 0))
+            if (insert_segments  && (upd_num > 0)) {
                 if((upd_num / 10000) < residual_rows)
                 {
                     if((++rows_this_segment) > rows_per_segment)
@@ -455,28 +455,34 @@ gen_tbl (int tnum, long start, long count, long upd_num)
                         upd_num += 10000;
                     }
                 }
-
-            if (set_seeds == 0)
-                if (validate)
+            }
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&o, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&o, upd_num);
+                }
+            }
             break;
         case SUPP:
             mk_supp (i, &supp);
-            if (set_seeds == 0)
-                if (validate)
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&supp, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&supp, upd_num);
+                }
+            }
             break;
         case CUST:
             mk_cust (i, &cust);
-            if (set_seeds == 0)
-                if (validate)
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&cust, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&cust, upd_num);
+                }
+            }
             break;
 #ifdef SSBM
         case PART:
@@ -486,37 +492,45 @@ gen_tbl (int tnum, long start, long count, long upd_num)
         case PART_PSUPP:
 #endif
             mk_part (i, &part);
-            if (set_seeds == 0)
-                if (validate)
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&part, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&part, upd_num);
+                }
+            }
             break;
 #ifdef SSBM
         case DATE:
             mk_date (i, &dt);
-            if (set_seeds == 0)
-                if (validate)
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&dt, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&dt, 0);
+                }
+            }
             break;
 #else
         case NATION:
             mk_nation (i, &code);
-            if (set_seeds == 0)
-                if (validate)
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&code, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&code, 0);
+                }
+            }
             break;
         case REGION:
             mk_region (i, &code);
-            if (set_seeds == 0)
-                if (validate)
+            if (set_seeds == 0) {
+                if (validate) {
                     tdefs[tnum].verify(&code, 0);
-                else
+                } else {
                     tdefs[tnum].loader[direct] (&code, 0);
+                }
+            }
             break;
 #endif
         }
@@ -616,7 +630,7 @@ partial (int tbl, int s)
 
     if (verbose > 0)
     {
-        fprintf (stderr, "\tStarting to load stage %d of %d for %s...",
+        fprintf (stderr, "\tStarting to load stage %d of %ld for %s...",
                  s, children, tdefs[tbl].comment);
     }
 
@@ -645,7 +659,7 @@ pload (int tbl)
 
     if (verbose > 0)
     {
-        fprintf (stderr, "Starting %d children to load %s",
+        fprintf (stderr, "Starting %ld children to load %s",
                  children, tdefs[tbl].comment);
     }
     for (c = 0; c < children; c++)
@@ -1030,11 +1044,11 @@ main (int ac, char **av)
             if (verbose > 0)
 #ifdef SSBM
                 fprintf (stderr,
-                         "Generating update pair #%d for %s [pid: %d]",
+                         "Generating update pair #%ld for %s [pid: %d]",
                          upd_num + 1, tdefs[LINE].comment, DSS_PROC);
 #else
                 fprintf (stderr,
-                         "Generating update pair #%d for %s [pid: %d]",
+                         "Generating update pair #%ld for %s [pid: %d]",
                          upd_num + 1, tdefs[ORDER_LINE].comment, DSS_PROC);
 
 #endif
@@ -1129,15 +1143,21 @@ main (int ac, char **av)
                 }
 #endif
                 if (verbose > 0)
-                    fprintf (stderr, "%s data for %s [pid: %ld]",
+                    fprintf (stderr, "%s data for %s [pid: %d]",
                              (validate)?"Validating":"Generating", tdefs[i].comment, DSS_PROC);
                 gen_tbl (i, minrow, rowcnt, upd_num);
                 if (verbose > 0)
                     fprintf (stderr, "done.\n");
             }
-            if (validate)
-                printf("Validation checksum for %s at %d GB: %0x\n",
-                       tdefs[i].name, scale, tdefs[i].vtotal);
+            if (validate) {
+                printf("Validation checksum for %s ",
+                       tdefs[i].name);//shit
+                
+printf("at %lu GB: ",
+                       scale);//shit
+                printf("%0lx\n",tdefs[i].vtotal);//shit
+                
+            }
         }
 
     if (direct)
