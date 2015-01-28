@@ -37,7 +37,7 @@ ALLSRC=$(DBGENSRC)
 
 
 %.o: src/%.c $(HDR)
-	$(CC) $(CFLAGS) $(LDFLAGS) -c $< $(LIBS) -I$(INCLUDE)
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $<  -I$(INCLUDE)
 #
 all: $(PROGS)
 $(PROG1): $(OBJ1) $(SETS) 
