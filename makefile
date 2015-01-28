@@ -8,7 +8,7 @@ LDFLAGS = -O
 # The OBJ,EXE and LIB macros will need to be changed for compilation under
 #  Windows NT
 OBJ     = .o
-LIBS    = 
+LIBS    = -lm 
 #
 PROG1 = dbgen
 PROG2 = qgen
