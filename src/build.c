@@ -197,7 +197,6 @@ mk_order(long index, order_t *o, long upd_num)
 {
     long      lcnt;
     long      rprice;
-    long      ocnt;
     long      tmp_date;
     long      c_date;
     long      clk_num;
@@ -225,7 +224,6 @@ mk_order(long index, order_t *o, long upd_num)
     o->spriority = 0;
 
     o->totalprice = 0;
-    ocnt = 0;
 
     RANDOM(o->lines, O_LCNT_MIN, O_LCNT_MAX, O_LCNT_SD);
     for (lcnt = 0; lcnt < o->lines; lcnt++)

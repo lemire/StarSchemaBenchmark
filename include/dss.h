@@ -503,7 +503,6 @@ extern tdef tdefs[];
 #define DT_MONEY	5
 #define DT_CHR		6
 
-int dbg_print(int dt, FILE *tgt, void *data, int len, int eol);
 int
 dbg_print_long(int format, FILE *target, long data, int len, int sep);
 int

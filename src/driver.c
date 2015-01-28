@@ -1152,11 +1152,11 @@ main (int ac, char **av)
             if (validate) {
                 printf("Validation checksum for %s ",
                        tdefs[i].name);//shit
-                
-printf("at %lu GB: ",
+
+                printf("at %lu GB: ",
                        scale);//shit
                 printf("%0lx\n",tdefs[i].vtotal);//shit
-                
+
             }
         }
 
