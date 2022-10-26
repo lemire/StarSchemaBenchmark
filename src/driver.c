@@ -398,6 +398,7 @@ gen_tbl (int tnum, long start, long count, long upd_num)
     code_t code;
 #endif
     static int completed = 0;
+    (void)completed;
     static int init = 0;
     long i;
 
