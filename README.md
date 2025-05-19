@@ -4,7 +4,11 @@ This repository contains a streamlined implementation of the table generation co
 
 > O'Neil, P., O'Neil, E., & Chen, X. (2007). *The Star Schema Benchmark*. [Online Publication of Database Generation Program](http://www.cs.umb.edu/~poneil/StarSchemaB.pdf).
 
-The SSBM is designed to evaluate the performance of database systems optimized for star schema data warehouses.
+The SSBM is designed to evaluate the performance of database systems optimized for star schema data warehouses. 
+
+It generates formatted text files that you can load in your database.
+
+The generated fact table (`lineorder.tbl`) can be nearly as large as you desire. It can serve for various benchmarking purposes.
 
 ---
 
