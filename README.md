@@ -1,5 +1,4 @@
 # StarSchemaBenchmark
-[![Build Status](https://travis-ci.org/lemire/StarSchemaBenchmark.png)](https://travis-ci.org/lemire/StarSchemaBenchmark)
 
 This is a simple copy of the table generation code from O'Neil et al.'s Star Schema Benchmark as
 described in the following paper:
